@@ -1,0 +1,30 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32630.192
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mailFolderParser", "mailFolderParser.csproj", "{D3312E99-7EF5-4672-A092-1C2B3413B2CE}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7B571C9A-41B2-486A-953E-DD486C339208}"
+	ProjectSection(SolutionItems) = preProject
+		Methods.cs = Methods.cs
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{D3312E99-7EF5-4672-A092-1C2B3413B2CE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D3312E99-7EF5-4672-A092-1C2B3413B2CE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D3312E99-7EF5-4672-A092-1C2B3413B2CE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D3312E99-7EF5-4672-A092-1C2B3413B2CE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {03A4DC03-BDE4-48BB-A8EE-2A8388ABE887}
+	EndGlobalSection
+EndGlobal

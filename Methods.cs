@@ -1,9 +1,7 @@
-﻿using System;
+﻿using ExcelDataReader;
 using MailKit;
 using MailKit.Net.Imap;
-using MailKit.Search;
 using MimeKit;
-using ExcelDataReader;
 using System.Data;
 
 public class UserInfo
@@ -23,6 +21,7 @@ public class Methods
 {
     public static UserInfo GetUserInfo()
     {
+        //Set encoding support and prepare excel file for work
         System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
         using var stream = File.Open(@"../../../data.xlsx", FileMode.Open, FileAccess.Read);
         using var reader = ExcelReaderFactory.CreateReader(stream);
@@ -33,6 +32,7 @@ public class Methods
                 UseHeaderRow = true
             }
         });
+        //Gettins mail and password from excel
         var table = result.Tables[0];
         string? mail = table.Rows[0][1].ToString();
         string? password = table.Rows[1][1].ToString();
@@ -43,6 +43,7 @@ public class Methods
     }
     public static Dictionary<string, string> GetFolders()
     {
+        //Set encoding support and prepare excel file for work
         System.Text.Encoding.RegisterProvider(System.Text.CodePagesEncodingProvider.Instance);
         using var stream = File.Open(@"../../../data.xlsx", FileMode.Open, FileAccess.Read);
         using var reader = ExcelReaderFactory.CreateReader(stream);
@@ -54,6 +55,7 @@ public class Methods
             }
         });
         var table = result.Tables[1];
+        //Making dictionary
         var dictionary = new Dictionary<string, string>();
         foreach (DataRow row in table.Rows)
         {
@@ -79,6 +81,7 @@ public class Methods
         var client = new ImapClient();
         try
         {
+            //Connecting to mail client
             client.Connect("imap.mail.ru", 993, true);
             Console.WriteLine("Client connection: " + client.IsConnected);
             return client;
@@ -95,6 +98,7 @@ public class Methods
     {
         try
         {
+            //Authentificating user on server
             client.Authenticate(info.mail, info.password);
             Console.WriteLine("Client Authentification: " + client.IsAuthenticated);
             return client;
@@ -103,18 +107,20 @@ public class Methods
         {
             Console.WriteLine("Error: invalid mail or password");
             Environment.Exit(-1);
-            throw; //try to fix
+            throw;
         }
     }
 
     public static void CheckFolders(ImapClient client, Dictionary<string, string> dictionary)
     {
+        //Making HashShet to collect all required fodlers name
         HashSet<string> folders = new HashSet<string>(dictionary.Values);
         var inbox = client.GetFolder("INBOX");
         foreach (var folder in folders)
         {
             try
             {
+                //Trying to get a required subfloder, create on fail
                 if (inbox.GetSubfolder(folder) != null)
                 {
                     Console.WriteLine("Folder " + folder + " exists!");
@@ -131,6 +137,7 @@ public class Methods
 
         try
         {
+            //Trying to get an Unsorted subfolder, create on fail 
             if (inbox.GetSubfolder("Unsorted") != null)
             {
                 Console.WriteLine("Folder Unsorted exists!");
@@ -147,11 +154,14 @@ public class Methods
     {
         var inbox = client.GetFolder("INBOX");
         var subject = msg.Subject.ToUpper();
+        //Splitting subject of message into list
         List<string> wordsList = subject.Split(' ').ToList();
         foreach (var word in wordsList)
         {
+            //Checking if dictionary contains word (need to fix)
             if (dictionary.ContainsKey(word))
             {
+                //Moving to destination folder
                 var destination = dictionary[word];
                 inbox.MoveTo(u, inbox.GetSubfolder(destination));
                 Console.WriteLine("Message [UID: " + u + "] MOVED TO " + destination);
@@ -159,6 +169,7 @@ public class Methods
             }
             else
             {
+                //Moving to Unsorted folder
                 inbox.MoveTo(u, inbox.GetSubfolder("Unsorted"));
                 Console.WriteLine("Message [UID: " + u + "] MOVED TO Unsorted");
                 return 0;

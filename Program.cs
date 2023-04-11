@@ -8,15 +8,16 @@ var client = new MailClient();
 
 //Client connection and authentification
 client.ConnectToMail();
-client.AuthentificateUser(data.GetMail(), data.GetPassword());
+client.AuthentificateUser(data.Mail, data.Password);
 
 //Setting up inbox and uids
-var inbox = client.GetInbox();
-inbox.Open(FolderAccess.ReadWrite);
+var _inbox  = client.GetInbox();
+IMyMailFolder inbox = (IMyMailFolder)_inbox;
+//var inbox = client.GetInbox();
 var uids = inbox.Search(SearchQuery.All);
 
 //Checking subfolders for existance
-client.CheckFolders(data.GetFolders());
+client.CheckFolders(data.Folders);
 
 Console.WriteLine("Listening on inbox messages");
 
@@ -34,7 +35,7 @@ while (true)
             Console.WriteLine("New message from" + msg.From + " With subject: " + msg.Subject);
             uids.Add(u);
             //Sending message for sorting (need to correct condition to send message to Unsorted subfolder)
-            int result = client.MoveMessage(u, msg, data.GetFolders());
+            int result = client.MoveMessage(u, msg, data.Folders);
         }
     }
     else

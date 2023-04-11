@@ -6,7 +6,7 @@ namespace mailFolderParser
 {
     internal class MailClient
     {
-        private readonly ImapClient? Client;
+        private readonly ImapClient Client;
 
         public MailClient()
         {

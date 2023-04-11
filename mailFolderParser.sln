@@ -3,10 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32630.192
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "mailFolderParser", "mailFolderParser.csproj", "{D3312E99-7EF5-4672-A092-1C2B3413B2CE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "mailFolderParser", "mailFolderParser.csproj", "{D3312E99-7EF5-4672-A092-1C2B3413B2CE}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{7B571C9A-41B2-486A-953E-DD486C339208}"
 	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
 		Methods.cs = Methods.cs
 	EndProjectSection
 EndProject

@@ -1,33 +1,29 @@
-﻿using MailKit;
+﻿using mailFolderParser;
+using MailKit;
 using MailKit.Search;
 
-//Initializing a cancellation token for the wait time
-var cancellationTokenSource = new CancellationTokenSource();
-var cancellationToken = cancellationTokenSource.Token;
+//Init classes
+var data = new UserData();
+var client = new MailClient();
 
-//Getting user mail, password
-var info = Methods.GetUserInfo();
-//Getting dictionary of folders where key -> sortCondition, value -> folder name
-var dictionary = Methods.GetFolders();
-//Connecting to IMAP mail server
-var client = Methods.ConnectToMail();
-//User authentication
-client = Methods.AuthentificateUser(client, info);
+//Client connection and authentification
+client.ConnectToMail();
+client.AuthentificateUser(data.GetMail(), data.GetPassword());
 
 //Setting up inbox and uids
-var inbox = client.Inbox;
+var inbox = client.GetInbox();
 inbox.Open(FolderAccess.ReadWrite);
 var uids = inbox.Search(SearchQuery.All);
 
 //Checking subfolders for existance
-Methods.CheckFolders(client, dictionary);
+client.CheckFolders(data.GetFolders());
 
 Console.WriteLine("Listening on inbox messages");
 
 while (true)
 {
-    //Setting 5 second delay
-    cancellationToken.WaitHandle.WaitOne(TimeSpan.FromSeconds(5));
+    //5 second delay
+    Thread.Sleep(5000);
     //Checking for new messages
     var newUids = inbox.Search(SearchQuery.Not(SearchQuery.Uids(uids)));
     if (newUids.Count > 0)
@@ -38,7 +34,7 @@ while (true)
             Console.WriteLine("New message from" + msg.From + " With subject: " + msg.Subject);
             uids.Add(u);
             //Sending message for sorting (need to correct condition to send message to Unsorted subfolder)
-            int result = Methods.MoveMessage(client, u, msg, dictionary);
+            int result = client.MoveMessage(u, msg, data.GetFolders());
         }
     }
     else
@@ -53,4 +49,4 @@ while (true)
     }
 }
 
-client.Disconnect(true);
+client.DisconnectClient();

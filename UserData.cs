@@ -5,11 +5,11 @@ namespace mailFolderParser
 {
     internal class UserData
     {
-        private readonly string? Mail;
+        public string Mail { get; }
 
-        private readonly string? Password;
+        public string Password { get; }
 
-        private Dictionary<string, string> Folders;
+        public Dictionary<string, string> Folders { get; }
 
 
         public UserData()
@@ -52,9 +52,5 @@ namespace mailFolderParser
             this.Folders = dictionary;
             stream.Close();
         }
-
-        public string GetMail() => this.Mail;
-        public string GetPassword() => this.Password;
-        public Dictionary<string, string> GetFolders() => this.Folders;
     }
 }
